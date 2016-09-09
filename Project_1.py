@@ -1,69 +1,53 @@
-folder ="C:\Users\minve\Pictures\Project1Images"
+import os
+import io
+import PIL
+from PIL import Image
+from statistics import median
 
-#Opens up each picture and creates a list of all of them.
-pictures = []
-myPicture1=makePicture(folder + "1.jpg")
-pictures.append(myPicture1)
-myPicture2=makePicture(folder + "2.jpg")
-pictures.append(myPicture2)
-myPicture3=makePicture(folder + "3.jpg")
-pictures.append(myPicture3)
-myPicture4=makePicture(folder + "4.jpg")
-pictures.append(myPicture4)
-myPicture5=makePicture(folder + "5.jpg")
-pictures.append(myPicture5)
-myPicture6=makePicture(folder + "6.jpg")
-pictures.append(myPicture6)
-myPicture7=makePicture(folder + "7.jpg")
-pictures.append(myPicture7)
-myPicture8=makePicture(folder + "8.jpg")
-pictures.append(myPicture8)
-myPicture9=makePicture(folder + "9.jpg")
-pictures.append(myPicture9)
-
-def medianOdd(myList):
-  # Store list length in the variable listLength
-  listLength = len(myList)
-  # Sort the list
-  sortedValues = sorted(myList)
-  # Location of middle value. Add one because index starts at 0.
-  middleIndex = (listLength + 1)/2
-  # Return the object located at tha
-  return sortedValues[middleIndex]
- 
-#The dimensions of each picture.  
-width = 800
-height = 530
-
-#Creates a list for each color.
-redPixelList = []
-greenPixelList = []
-bluePixelList = []
-
-#Creates a new picture called canvas with the new width and height.
-canvas=makeEmptyPicture(width,height)
-#Goes through each picutre on the x axis
-for x in range(0,width):
-  #Goes through each picture on the y axis
-  for y in range(0, height):
-    #Goes through the list of pictures.
-    for index in range(0,9):
-      #JES getPixel function takes as input a picture object and coordinate pair 
-      pixel = getPixel(pictures[index], x, y)
-      red = getRed(pixel)      
-      green = getGreen(pixel)
-      blue = getBlue(pixel)
-      redPixelList.append(red)
-      greenPixelList.append(green)
-      bluePixelList.append(blue)
-    cpixel = getPixel(canvas, x, y)
-    setColor(cpixel, makeColor(medianOdd(redPixelList), medianOdd(greenPixelList), medianOdd(bluePixelList)))
-    #Including the pixel list for the color allows it so that it gets the values of the median values and remove the 
-    #other values.
-    redPixelList=[]
-    greenPixelList=[]
-    bluePixelList=[] 
- #Displays the new pixels to a new picture.   
-show(canvas)
-#Creates the picture to a new file.
-writePictureTo(canvas,folder + "temp.png")
+#read files and assigns them to an array
+image1 = Image.open("C:/Users/minve/Pictures/Project1Images/1.png")
+image1.load()
+image2 = Image.open("C:/Users/minve/Pictures/Project1Images/2.png")
+image2.load()
+image3 = Image.open("C:/Users/minve/Pictures/Project1Images/3.png")
+image3.load()
+image4 = Image.open("C:/Users/minve/Pictures/Project1Images/4.png")
+image4.load()
+image5 = Image.open("C:/Users/minve/Pictures/Project1Images/5.png")
+image5.load()
+image6 = Image.open("C:/Users/minve/Pictures/Project1Images/6.png")
+image6.load()
+image7 = Image.open("C:/Users/minve/Pictures/Project1Images/7.png")
+image7.load()
+image8 = Image.open("C:/Users/minve/Pictures/Project1Images/8.png")
+image8.load()
+image9 = Image.open("C:/Users/minve/Pictures/Project1Images/9.png")
+image9.load()
+jpgimage=[image1,image2, image3, image4, image5, image6, image7, image8, image9]
+##sets picture width and height, already determinded because all 9 pictures are same size
+pictureWidth=495
+pictureHeight=557      
+myImage=[]
+##sorts each pixel color and then assigns it to the new picture for each spot in the list
+new_im=Image.new("RGB",(495,557))
+new_imdata=new_im.load()
+#creating the new pixel
+for x in range(0, pictureWidth):
+    for y in range(0, pictureHeight):
+        redPixelList=[]
+        greenPixelList=[]
+        bluePixelList=[]
+        for myImage in jpgimage:
+            myRed, myGreen, myBlue = myImage.getpixel((x,y))
+            redPixelList.append(myRed)
+            greenPixelList.append(myGreen)
+            bluePixelList.append(myBlue)
+        sorted(redPixelList)
+        sorted(greenPixelList)
+        sorted(bluePixelList)
+      
+        new_imdata[x,y] = (int(median(redPixelList)),int(median(greenPixelList)),int(median(bluePixelList)))
+            
+##shows new image made from the other 9 images, and prints done upon completetion
+new_im.show()
+print("done")
